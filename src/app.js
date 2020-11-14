@@ -5,9 +5,11 @@ const cors = require( 'cors' );
 const { CLIENT_ORIGIN } = require( './config' );
 const helmet = require( 'helmet' );
 const { NODE_ENV } = require( './config');
-const ItemsService = require( './items-service' );
+const ItemsService = require( './items/items-service' );
+const itemsRouter = require('./items/items-router');
 
 const app = express();
+const jsonParser = express.json()
 
 const morganOption = ( NODE_ENV === 'production' )
   ? 'tiny'
@@ -21,16 +23,15 @@ app.use(
   }) 
 );
 
+app.use( '/items', itemsRouter )
+
 app.get( '/', ( req, res ) => {
   res.send( 'Hello, world!' )
 })
 
-app.get( '/watchlist', ( req, res, next ) => {
-  ItemsService.getAllItems( /* knex instance */)
-    .then( items => {
-      res.json( items )
-    })
-    .catch( next )
+app.get( '/xss', ( req, res ) => {
+  res.cookie( 'secretToken', '1234567890' );
+  res.sendFile( __dirname + '/xss-example.html' );
 })
 
 app.use( errorHandler = ( error, req, res, next) => {

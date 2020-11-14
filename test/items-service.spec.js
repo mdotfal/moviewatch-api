@@ -1,4 +1,4 @@
-const ItemsService = require( '../src/items-service' );
+const ItemsService = require( '../src/items/items-service' );
 const knex = require( 'knex' );
 const { default: expectCt } = require('helmet/dist/middlewares/expect-ct');
 
@@ -30,7 +30,6 @@ describe( `Items service object` , () => {
       isprime: false,
       rating: "Skip"
     },
-    
   ]
 
   
