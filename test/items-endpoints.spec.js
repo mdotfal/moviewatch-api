@@ -22,12 +22,12 @@ describe( `Items Endpoints`, () => {
   afterEach( `cleanup`, () => db( 'moviewatch_items' ).truncate() )
 
 
-  describe( `GET /items`, () => {
+  describe( `GET /api/items`, () => {
 
     context( `Given no items`, () => {
       it( `responds with 200 and an empty list`, () => {
         return supertest( app )
-          .get( '/items' )
+          .get( '/api/items' )
           .expect( 200, [] )
       })
     })
@@ -41,21 +41,21 @@ describe( `Items Endpoints`, () => {
           .insert( testItems )
       })
 
-      it( `GET /items responds with a 200 an all of the articles`, () => {
+      it( `GET /api/items responds with a 200 an all of the articles`, () => {
         return supertest( app )
-          .get( '/items' )
+          .get( '/api/items' )
           .expect( 200, testItems )
       })
     })
   })
 
-  describe( `GET /items/:item_id`, () => {
+  describe( `GET /api/items/:item_id`, () => {
 
     context( `Given no items`, () => {
       it( `responds with 404`, () => {
         const itemId = 123456
         return supertest( app )
-          .get( `/items/${ itemId }`)
+          .get( `/api/items/${ itemId }`)
           .expect( 404, { error: { message: `Item doesn't exist` } })
       })
     })
@@ -69,17 +69,17 @@ describe( `Items Endpoints`, () => {
           .insert( testItems )
       })
   
-      it( `GET /items/:item_id responds with 200 and the specified item`, () => {
+      it( `GET /api/items/:item_id responds with 200 and the specified item`, () => {
         const itemId = 2
         const expectedItem = testItems[ itemId - 1 ]
         return supertest( app )
-          .get( `/items/${ itemId }` )
+          .get( `/api/items/${ itemId }` )
           .expect( 200, expectedItem )
       })
     })
   })
 
-  describe( `POST /items`, () => {
+  describe( `POST /api/items`, () => {
     it( `creates an item, responding with 201 and the new item`, function() {
       this.retries( 3 )
       const newItem = {
@@ -90,7 +90,7 @@ describe( `Items Endpoints`, () => {
         rating: "Watch"
       }
       return supertest( app )
-        .post( '/items' )
+        .post( '/api/items' )
         .send( newItem )
         .expect( 201 )
         .expect( res => {
@@ -100,11 +100,11 @@ describe( `Items Endpoints`, () => {
           expect( res.body.isprime ).to.eql( newItem.isprime )
           expect( res.body.rating ).to.eql( newItem.rating )
           expect( res.body ).to.have.property( 'id' )
-          expect( res.headers.location ).to.eql( `/items/${ res.body.id }`)
+          expect( res.headers.location ).to.eql( `/api/items/${ res.body.id }`)
         })
         .then( postRes => 
           supertest( app )
-            .get( `/items/${ postRes.body.id }` )
+            .get( `/api/items/${ postRes.body.id }` )
             .expect( postRes.body )
         )
     })
@@ -124,7 +124,7 @@ describe( `Items Endpoints`, () => {
         delete newItem[ field ]
   
         return supertest( app )
-          .post( '/items' )
+          .post( '/api/items' )
           .send( newItem )
           .expect( 400, {
             error: { message: `Missing '${ field }' in request body` }
@@ -133,12 +133,12 @@ describe( `Items Endpoints`, () => {
     })
   })
 
-  describe( `DELETE /items/:items_id`, () => {
+  describe( `DELETE /api/items/:items_id`, () => {
     context( `Given no items`, () => {
       it( `responds with 404`, () => {
         const itemId = 123456
         return supertest( app )
-          .delete( `/items/${ itemId }` )
+          .delete( `/api/items/${ itemId }` )
           .expect( 404, { error: { message: `Item doesn't exist` } })
       })
     })
@@ -156,17 +156,95 @@ describe( `Items Endpoints`, () => {
         const idToRemove = 2
         const expectedItem = testItems.filter( item => item.id !== idToRemove )
         return supertest( app )
-          .delete( `/items/${ idToRemove }`)
+          .delete( `/api/items/${ idToRemove }`)
           .expect( 204 )
           .then( res =>
             supertest( app )
-              .get( `/items` )
+              .get( `/api/items` )
               .expect( expectedItem )
           )
       })
     })
   })
 
+  describe.only( `PATCH /api/items/:item_id`, () => {
+    context( `Given no items`, () => {
+      it( `responds with 404`, () => {
+        const itemId = 123456
+        return supertest( app )
+          .patch( `/api/items/${ itemId }` )
+          .expect( 404, { error: { message: `Item doesn't exist` } })
+      } )
+    })
 
+    context( `Given there are no items in the database`, () => {
+      const testItems = makeItemsArray()
 
+      beforeEach( `insert items`, () => {
+        return db
+          .into( 'moviewatch_items' )
+          .insert( testItems )
+      })
+
+      it( `responds with 204 and updates the article`, () => {
+        const idToUpdate = 2
+          const updateItem = {
+            title: 'updated item title',
+            isnetflix: true,
+            ishulu: true,
+            isprime: true,
+            rating: "Watch"
+          }
+          const expectedItem = {
+            ...testItems[ idToUpdate -1 ],
+            ...updateItem
+          }
+          return supertest( app )
+            .patch( `/api/items/${ idToUpdate }`)
+            .send( updateItem )
+            .expect( 204 )
+            .then( res =>
+              supertest( app )
+                .get( `/api/items/${ idToUpdate }`)
+                .expect( expectedItem ) 
+            )
+      })
+
+      it( `responds with 400 when no required fields supported`, () => {
+        const idToUpdate = 2
+        return supertest( app )
+          .patch( `/api/items/${ idToUpdate }` )
+          .send( { irrelevantField: 'foo' })
+          .expect( 400, {
+            error: {
+              message: `Request body must contain either 'title', 'isNetflix', 'isHulu', 'isPrime', or 'rating'`
+            }
+          })
+      })
+
+      it( `responds with 204 when updating only a subset of fields`, () => {
+        const idToUpdate = 2
+        const updateItem = {
+          title: 'updated item title',
+        }
+        const expectedItem = {
+          ...testItems[ idToUpdate - 1 ],
+          ...updateItem
+        }
+
+        return supertest( app )
+          .patch( `/api/items/${ idToUpdate }` )
+          .send({
+            ...updateItem,
+            fieldToIgnore: 'should not be in GET response'
+          })
+          .expect( 204 )
+          .then( res => 
+            supertest( app )
+              .get( `/api/items/${ idToUpdate }` )
+              .expect( expectedItem )  
+          )
+      })
+    })
+  })
 })

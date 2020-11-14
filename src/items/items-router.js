@@ -1,3 +1,4 @@
+const path = require( 'path' )
 const express = require( 'express')
 const ItemsService = require( './items-service' )
 
@@ -33,7 +34,7 @@ itemsRouter
       .then( item => {
         res
           .status( 201 )
-          .location( `/items/${ item.id }`)
+          .location( path.posix.join( req.originalUrl, `/${ item.id }`) )
           .json( item )
       })
       .catch( next )
@@ -71,6 +72,29 @@ itemsRouter
       req.params.item_id
     )
       .then( () => {
+        res.status( 204 ).end()
+      })
+      .catch( next )
+  })
+  .patch( jsonParser, ( req, res, next ) => {
+    const { title, isnetflix, ishulu, isprime, rating } = req.body
+    const itemToUpdate = { title, isnetflix, ishulu, isprime, rating }
+
+    const numberOfValues = Object.values( itemToUpdate ).filter( Boolean ).length
+    if( numberOfValues === 0) {
+      return res.status( 400 ).json({
+        error: {
+          message: `Request body must contain either 'title', 'isNetflix', 'isHulu', 'isPrime', or 'rating'`
+        }
+      })
+    }
+
+    ItemsService.updateItem(
+      req.app.get( 'db' ),
+      req.params.item_id,
+      itemToUpdate
+    )
+      .then( numRowsAffected => {
         res.status( 204 ).end()
       })
       .catch( next )

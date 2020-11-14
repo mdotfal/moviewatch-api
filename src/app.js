@@ -23,7 +23,7 @@ app.use(
   }) 
 );
 
-app.use( '/items', itemsRouter )
+app.use( '/api/items', itemsRouter )
 
 app.get( '/', ( req, res ) => {
   res.send( 'Hello, world!' )
