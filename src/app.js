@@ -5,6 +5,7 @@ const cors = require( 'cors' );
 const { CLIENT_ORIGIN } = require( './config' );
 const helmet = require( 'helmet' );
 const { NODE_ENV } = require( './config');
+const ItemsService = require( './items-service' );
 
 const app = express();
 
@@ -22,6 +23,14 @@ app.use(
 
 app.get( '/', ( req, res ) => {
   res.send( 'Hello, world!' )
+})
+
+app.get( '/watchlist', ( req, res, next ) => {
+  ItemsService.getAllItems( /* knex instance */)
+    .then( items => {
+      res.json( items )
+    })
+    .catch( next )
 })
 
 app.use( errorHandler = ( error, req, res, next) => {
