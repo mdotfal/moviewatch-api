@@ -14,7 +14,7 @@ ItemsService.getAllItems( knexInstance )
       title: 'test title',
       is_netflix: true,
       is_hulu: true,
-      is_prime: true,
+      is_prime: false,
       rating: "Watch"
     })
   )
@@ -25,10 +25,10 @@ ItemsService.getAllItems( knexInstance )
       newItem.id,
       {
         title: 'Updated title',
-        // is_netflix: true,
-        // is_hulu: true,
-        // is_prime: true,
-        // rating: "Watch"
+        is_netflix: true,
+        is_hulu: true,
+        is_prime: true,
+        rating: "Watch"
       }
     ).then( () => ItemsService.getById( knexInstance, newItem.id ))
   })
