@@ -84,9 +84,9 @@ describe( `Items Endpoints`, () => {
       this.retries( 3 )
       const newItem = {
         title: 'test title',
-        isnetflix: true,
-        ishulu: true,
-        isprime: true,
+        is_netflix: true,
+        is_hulu: true,
+        is_prime: true,
         rating: "Watch"
       }
       return supertest( app )
@@ -95,9 +95,9 @@ describe( `Items Endpoints`, () => {
         .expect( 201 )
         .expect( res => {
           expect( res.body.title ).to.eql( newItem.title )
-          expect( res.body.isnetflix ).to.eql( newItem.isnetflix )
-          expect( res.body.ishulu ).to.eql( newItem.ishulu )
-          expect( res.body.isprime ).to.eql( newItem.isprime )
+          expect( res.body.is_netflix ).to.eql( newItem.is_netflix )
+          expect( res.body.is_hulu ).to.eql( newItem.is_hulu )
+          expect( res.body.is_prime ).to.eql( newItem.is_prime )
           expect( res.body.rating ).to.eql( newItem.rating )
           expect( res.body ).to.have.property( 'id' )
           expect( res.headers.location ).to.eql( `/api/items/${ res.body.id }`)
@@ -109,14 +109,14 @@ describe( `Items Endpoints`, () => {
         )
     })
 
-    const requiredFields = [ 'title', 'isnetflix', 'ishulu', 'isprime', 'rating' ]
+    const requiredFields = [ 'title', 'is_netflix', 'is_hulu', 'is_prime', 'rating' ]
 
     requiredFields.forEach( field => {
       const newItem = {
         title: 'test title',
-        isnetflix: true,
-        ishulu: true,
-        isprime: true,
+        is_netflix: true,
+        is_hulu: true,
+        is_prime: true,
         rating: "Watch"
       }
 
@@ -167,7 +167,7 @@ describe( `Items Endpoints`, () => {
     })
   })
 
-  describe.only( `PATCH /api/items/:item_id`, () => {
+  describe( `PATCH /api/items/:item_id`, () => {
     context( `Given no items`, () => {
       it( `responds with 404`, () => {
         const itemId = 123456
@@ -190,9 +190,9 @@ describe( `Items Endpoints`, () => {
         const idToUpdate = 2
           const updateItem = {
             title: 'updated item title',
-            isnetflix: true,
-            ishulu: true,
-            isprime: true,
+            is_netflix: true,
+            is_hulu: true,
+            is_prime: true,
             rating: "Watch"
           }
           const expectedItem = {
@@ -217,7 +217,7 @@ describe( `Items Endpoints`, () => {
           .send( { irrelevantField: 'foo' })
           .expect( 400, {
             error: {
-              message: `Request body must contain either 'title', 'isNetflix', 'isHulu', 'isPrime', or 'rating'`
+              message: `Request body must contain either 'title', 'is_netflix', 'is_hulu', 'is_prime', or 'rating'`
             }
           })
       })

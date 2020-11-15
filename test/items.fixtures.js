@@ -3,25 +3,25 @@ function makeItemsArray() {
     {
       id: 1,
       title: 'test-title',
-      isnetflix: true,
-      ishulu: true,
-      isprime: true,
+      is_netflix: true,
+      is_hulu: true,
+      is_prime: true,
       rating: "Watch"
     },
     {
       id: 2,
       title: 'test-title-2',
-      isnetflix: true,
-      ishulu: true,
-      isprime: false,
+      is_netflix: true,
+      is_hulu: true,
+      is_prime: false,
       rating: "Watch"
     },
     {
       id: 3,
       title: 'test-title-3',
-      isnetflix: true,
-      ishulu: false,
-      isprime: false,
+      is_netflix: true,
+      is_hulu: false,
+      is_prime: false,
       rating: "Skip"
     },
   ]

@@ -16,8 +16,8 @@ itemsRouter
       .catch( next )
   })
   .post( jsonParser, ( req, res, next ) => {
-    const { title, isnetflix, ishulu, isprime, rating } = req.body
-    const newItem = { title, isnetflix, ishulu, isprime, rating }
+    const { title, is_netflix, is_hulu, is_prime, rating } = req.body
+    const newItem = { title, is_netflix, is_hulu, is_prime, rating }
 
     for (const [ key, value ] of Object.entries( newItem )) {
      if ( value == null ) {
@@ -60,9 +60,9 @@ itemsRouter
     res.json({
       id: res.item.id,
       title: res.item.title,
-      isnetflix: res.item.isnetflix,
-      ishulu: res.item.ishulu,
-      isprime: res.item.isprime,
+      is_netflix: res.item.is_netflix,
+      is_hulu: res.item.is_hulu,
+      is_prime: res.item.is_prime,
       rating: res.item.rating
     })
   })
@@ -77,14 +77,14 @@ itemsRouter
       .catch( next )
   })
   .patch( jsonParser, ( req, res, next ) => {
-    const { title, isnetflix, ishulu, isprime, rating } = req.body
-    const itemToUpdate = { title, isnetflix, ishulu, isprime, rating }
+    const { title, is_netflix, is_hulu, is_prime, rating } = req.body
+    const itemToUpdate = { title, is_netflix, is_hulu, is_prime, rating }
 
     const numberOfValues = Object.values( itemToUpdate ).filter( Boolean ).length
     if( numberOfValues === 0) {
       return res.status( 400 ).json({
         error: {
-          message: `Request body must contain either 'title', 'isNetflix', 'isHulu', 'isPrime', or 'rating'`
+          message: `Request body must contain either 'title', 'is_netflix', 'is_hulu', 'is_prime', or 'rating'`
         }
       })
     }

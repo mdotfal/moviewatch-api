@@ -1,6 +1,5 @@
 const ItemsService = require( '../src/items/items-service' );
 const knex = require( 'knex' );
-const { default: expectCt } = require('helmet/dist/middlewares/expect-ct');
 
 describe( `Items service object` , () => {
   let db
@@ -9,25 +8,25 @@ describe( `Items service object` , () => {
     {
       id: 1,
       title: 'test-title',
-      isnetflix: true,
-      ishulu: true,
-      isprime: true,
+      is_netflix: true,
+      is_hulu: true,
+      is_prime: true,
       rating: "Watch"
     },
     {
       id: 2,
       title: 'test-title-2',
-      isnetflix: true,
-      ishulu: true,
-      isprime: false,
+      is_netflix: true,
+      is_hulu: true,
+      is_prime: false,
       rating: "Watch"
     },
     {
       id: 3,
       title: 'test-title-3',
-      isnetflix: true,
-      ishulu: false,
-      isprime: false,
+      is_netflix: true,
+      is_hulu: false,
+      is_prime: false,
       rating: "Skip"
     },
   ]
@@ -70,9 +69,9 @@ describe( `Items service object` , () => {
           expect( actual ).to.eql({
             id: thirdId,
             title: thirdTestItem.title,
-            ishulu: thirdTestItem.ishulu,
-            isnetflix: thirdTestItem.isnetflix,
-            isprime: thirdTestItem.isprime,
+            is_hulu: thirdTestItem.is_hulu,
+            is_netflix: thirdTestItem.is_netflix,
+            is_prime: thirdTestItem.is_prime,
             rating: thirdTestItem.rating
           })
         })
@@ -92,9 +91,9 @@ describe( `Items service object` , () => {
       const idOfItemToUpdate = 3
       const newItemData = {
         title: 'updated-title',
-        isnetflix: true,
-        ishulu: true,
-        isprime: true,
+        is_netflix: true,
+        is_hulu: true,
+        is_prime: true,
         rating: "Watch"
       }
       return ItemsService.updateItem( db, idOfItemToUpdate, newItemData )
@@ -120,9 +119,9 @@ describe( `Items service object` , () => {
     it( `insertItem() inserts a new item and resolves the new item with an 'id'`, () => {
       const newItem = {
           title: 'test-title',
-          isnetflix: true,
-          ishulu: true,
-          isprime: true,
+          is_netflix: true,
+          is_hulu: true,
+          is_prime: true,
           rating: "Watch"
       }
       return ItemsService.insertItem( db, newItem )
@@ -130,9 +129,9 @@ describe( `Items service object` , () => {
           expect( actual ).to.eql({
             id: 1,
             title: newItem.title,
-            isnetflix: newItem.isnetflix,
-            ishulu: newItem.ishulu,
-            isprime: newItem.isprime,
+            is_netflix: newItem.is_netflix,
+            is_hulu: newItem.is_hulu,
+            is_prime: newItem.is_prime,
             rating: newItem.rating
           })
         })

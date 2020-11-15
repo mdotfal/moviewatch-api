@@ -13,7 +13,11 @@ const ItemsService = {
       })
   },
   getById( knex, id ) {
-    return knex.from( 'moviewatch_items' ).select( '*' ).where( 'id', id ).first()
+    return knex
+      .select( '*' )
+      .from( 'moviewatch_items' )
+      .where( 'id', id )
+      .first()
   },
   deleteItem( knex, id ) {
     return knex( 'moviewatch_items' )
