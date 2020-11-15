@@ -57,7 +57,7 @@ itemsRouter
       .catch( next )
   })
   .get( ( req, res, next) => {
-    res.json({
+    return res.json({
       id: res.item.id,
       title: res.item.title,
       is_netflix: res.item.is_netflix,

@@ -7,14 +7,14 @@ const knexInstance = knex({
   connection: process.env.DB_URL,
 })
 
-ItemsService.getById( knexInstance )
+ItemsService.getAllItems( knexInstance )
   .then( items => console.log( items ))
   .then( () => 
     ItemsService.insertItem( knexInstance, {
-      title: 'test-title',
-      isnetflix: true,
-      ishulu: true,
-      isprime: true,
+      title: 'test title',
+      is_netflix: true,
+      is_hulu: true,
+      is_prime: true,
       rating: "Watch"
     })
   )
@@ -23,9 +23,16 @@ ItemsService.getById( knexInstance )
     return ItemsService.updateItem(
       knexInstance,
       newItem.id,
-      { title: 'Updated title' }
+      {
+        title: 'Updated title',
+        // is_netflix: true,
+        // is_hulu: true,
+        // is_prime: true,
+        // rating: "Watch"
+      }
     ).then( () => ItemsService.getById( knexInstance, newItem.id ))
   })
   .then( item => {
     return ItemsService.deleteItem( knexInstance, item.id )
   })
+  .catch( error => console.log( error ))
