@@ -1,7 +1,9 @@
 const ItemsService = {
 
   getAllItems( knex ) {
-    return knex.select( '*' ).from( 'moviewatch_items' )
+    return knex
+      .select( '*' )
+      .from( 'moviewatch_items' )
   },
   insertItem( knex, newItem ) {
     return knex
