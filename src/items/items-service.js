@@ -3,7 +3,7 @@ const ItemsService = {
   getAllItems( knex ) {
     return knex
       .select( '*' )
-      .from( 'moviewatch_items' )
+      .from( 'moviewatch_items' );
   },
   insertItem( knex, newItem ) {
     return knex
@@ -12,25 +12,25 @@ const ItemsService = {
       .returning( '*' )
       .then( rows => {
         return rows[ 0 ]
-      })
+      });
   },
   getById( knex, id ) {
     return knex
       .select( '*' )
       .from( 'moviewatch_items' )
       .where( 'id', id )
-      .first()
+      .first();
   },
   deleteItem( knex, id ) {
     return knex( 'moviewatch_items' )
       .where( { id } )
-      .delete()
+      .delete();
   },
   updateItem( knex, id, newItemFields ) {
     return knex( 'moviewatch_items' )
       .where( { id } )
-      .update( newItemFields )
+      .update( newItemFields );
   }
-}
+};
 
 module.exports = ItemsService;

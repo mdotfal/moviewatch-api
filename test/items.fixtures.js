@@ -24,9 +24,9 @@ function makeItemsArray() {
       is_prime: false,
       rating: "Skip"
     },
-  ]
-}
+  ];
+};
 
 module.exports = {
   makeItemsArray,
-}
+};
