@@ -5,6 +5,8 @@ const ItemsService = require( './items-service' );
 const itemsRouter = express.Router();
 const jsonParser = express.json();
 
+/* ITEMS ROUTER /api/items */
+
 itemsRouter
   .route( '/' )
   .get( ( req, res, next ) => {
@@ -39,6 +41,8 @@ itemsRouter
       })
       .catch( next )
   });
+
+/* ITEMS ROUTER /api/items/:item_id */
 
 itemsRouter
   .route( '/:item_id' )

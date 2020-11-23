@@ -20,11 +20,15 @@ app.use( cors({
   origin: CLIENT_ORIGIN
 }) );
 
+/* API ROUTER */
+
 app.use( '/api/items', itemsRouter );
 
 app.get( '/', ( req, res ) => {
   res.send( 'Hello, world!' )
 });
+
+/* ERROR HANDLER */
 
 app.use( errorHandler = ( error, req, res, next) => {
   let response;

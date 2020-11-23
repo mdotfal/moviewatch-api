@@ -4,6 +4,8 @@ const supertest = require('supertest');
 const app = require( '../src/app' );
 const { makeItemsArray } = require( './items.fixtures' );
 
+/* DESCRIBE ALL ENDPOINTS */
+
 describe( `Items Endpoints`, () => {
   let db;
 
@@ -21,6 +23,7 @@ describe( `Items Endpoints`, () => {
 
   afterEach( `cleanup`, () => db( 'moviewatch_items' ).truncate() );
 
+  /* DESCRIBE /api/item ENDPOINT */
 
   describe( `GET /api/items`, () => {
 
@@ -48,6 +51,8 @@ describe( `Items Endpoints`, () => {
       });
     });
   });
+
+  /* DESCRIBE /api/items/:item_id ENDPOINT */
 
   describe( `GET /api/items/:item_id`, () => {
 
