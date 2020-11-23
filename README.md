@@ -4,6 +4,19 @@
 
 ### Documentation
 
+[ Base URL: https://moviewatch-app.vercel.app/ ]
+
+GET /api/items
+
+POST /api/items
+
+PATCH /api/items/:`id`
+
+DELETE /api/items/:`id`
+
+
+#### Technologies Used: PostgreSQL, Express, ReactJS, Node.js, JavaScript, HTML, CSS
+
 MovieWatch is an application you can recommend a movie or tv show title, rate it "Watch" or "Skip", and tag the streaming services ( Netflix, Hulu, Prime Video ) to keep track of where to find the recommended title.
 
 ![ItemForm](images/itemform.png)
